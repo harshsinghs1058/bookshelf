@@ -1,21 +1,28 @@
 {
   "name": "bookshelf",
   "version": "0.0.0",
+  "homepage": "https://harshsinghs1058.github.io/bookshelf/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "firebase": "^9.6.0",
+    "formik": "^2.2.9",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2"
   },
   "devDependencies": {
     "@tailwindcss/jit": "^0.1.18",
     "@vitejs/plugin-react": "^1.0.7",
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.4",
-    "tailwindcss": "^2.2.19",
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.10",
+    "tailwindcss": "^2.1.1",
     "vite": "^2.7.0"
   }
 }
