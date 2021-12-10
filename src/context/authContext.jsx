@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }) => {
     });
   };
   //req user email
-  const userSignIn = (email) => {
+  const userSignIn = (uid) => {
     setAuth({
       isSignedIn: true,
-      email,
+      uid: uid,
     });
   };
 

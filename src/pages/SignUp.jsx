@@ -2,6 +2,9 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import firebase from "@firebase/app-compat";
+import loading_gif from "./../assets/loading_gif.gif";
+import { useAuth } from "../context/authContext";
+
 const initialValues = {
   email: "",
   password: "",
@@ -32,10 +35,11 @@ const validate = (values) => {
   return errors;
 };
 function SignUp() {
+  const [auth, userSignIn, userSignOut] = useAuth(useAuth);
   const [width, setWidth] = useState(window.screen.width);
   const navigate = useNavigate();
   const formik = useFormik({ initialValues, validate });
-  const [isAllEdited, setisAllEdited] = useState(false);
+  const [isAllEdited, setIsAllEdited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   window.addEventListener("resize", () => {
     setWidth(window.innerWidth);
@@ -43,7 +47,7 @@ function SignUp() {
 
   const handleFormSubmission = async (event) => {
     event.preventDefault();
-    setisAllEdited(true);
+    setIsAllEdited(true);
     if (
       !(
         formik.errors.email ||
@@ -52,7 +56,7 @@ function SignUp() {
       )
     ) {
       setIsLoading(true);
-      firebase
+      await firebase
         .auth()
         .createUserWithEmailAndPassword(
           formik.values.email.trim(),
@@ -65,9 +69,11 @@ function SignUp() {
             "bookshelfAuth",
             JSON.stringify({ isSignedIn: true, uid: user.multiFactor.user.uid })
           );
+          userSignIn(user.multiFactor.user.uid);
           navigate("/bookshelf/books", { replace: true });
         })
         .catch((error) => {
+          console.log(error);
           var errorCode = error.code;
           var errorMessage = error.message;
           alert(errorCode + " " + errorMessage);
@@ -110,9 +116,7 @@ function SignUp() {
               />
             </div>
             <div className='text-red-600 ml-4'>
-              {(() => isAllEdited || formik.touched.email)
-                ? formik.errors.email
-                : ""}
+              {isAllEdited || formik.touched.email ? formik.errors.email : ""}
             </div>
           </div>
           <div className='mx-10'>
@@ -129,7 +133,7 @@ function SignUp() {
               />
             </div>
             <div className='text-red-600 ml-4'>
-              {(() => isAllEdited || formik.touched.password)
+              {isAllEdited || formik.touched.password
                 ? formik.errors.password
                 : ""}
             </div>
@@ -148,22 +152,30 @@ function SignUp() {
               />
             </div>
             <div className='text-red-600 ml-4'>
-              {(() => {
-                isAllEdited || formik.touched.confirmPassword;
-              })
+              {isAllEdited || formik.touched.confirmPassword
                 ? formik.errors.confirmPassword
                 : ""}
             </div>
           </div>
           <div
-            className='rounded-2xl bg-yellow-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer'
+            className='rounded-2xl bg-yellow-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer w-2/5 text-center'
             onClick={handleFormSubmission}
           >
-            Sign Up
+            {isLoading ? (
+              <img
+                src={loading_gif}
+                height='34px'
+                width='34px'
+                alt='loading'
+                className='mx-auto'
+              />
+            ) : (
+              "Sign Up"
+            )}
           </div>
           <hr className='border-t-2 border-gray-500 my-3 h-1 w-9/12' />
           <div
-            className='rounded-2xl bg-blue-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer'
+            className='rounded-2xl bg-blue-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer w-2/5 text-center'
             onClick={() => navigate("/bookshelf/signIn")}
           >
             Sign in

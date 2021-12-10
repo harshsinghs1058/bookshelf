@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../context/authContext";
 import firebase from "@firebase/app-compat";
+import loading_gif from "./../assets/loading_gif.gif";
 const initialValues = {
   email: "",
   password: "",
@@ -32,7 +33,7 @@ function SignIn() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({ initialValues, validate });
-  const [isAllEdited, setisAllEdited] = useState(false);
+  const [isAllEdited, setIsAllEdited] = useState(false);
   const [auth, userSignIn, userSignOut] = useAuth(useAuth);
   window.addEventListener("resize", () => {
     setWidth(window.innerWidth);
@@ -40,10 +41,10 @@ function SignIn() {
 
   const handleFormSubmission = async (event) => {
     event.preventDefault();
-    setisAllEdited(true);
+    setIsAllEdited(true);
     if (!(formik.errors.email || formik.errors.password)) {
       setIsLoading(true);
-      firebase
+      await firebase
         .auth()
         .signInWithEmailAndPassword(
           formik.values.email.trim(),
@@ -56,6 +57,7 @@ function SignIn() {
             "bookshelfAuth",
             JSON.stringify({ isSignedIn: true, uid: user.multiFactor.user.uid })
           );
+          userSignIn(user.multiFactor.user.uid);
           navigate("/bookshelf/books", { replace: true });
         })
         .catch((error) => {
@@ -85,7 +87,7 @@ function SignIn() {
           </div>
         )}
         <div className='flex flex-col items-center md:w-1/2 w-full h-full py-10 justify-evenly'>
-          <h1 className='font-bold text-4xl'>Create Account</h1>
+          <h1 className='font-bold text-4xl'>Welcome Back</h1>
           <div className='mx-10'>
             <div className='border-2 border-black rounded-2xl focus-within:border-blue-500 lg:w-96 w-90%  focus-within:border-3'>
               <input
@@ -101,9 +103,7 @@ function SignIn() {
               />
             </div>
             <div className='text-red-600 ml-4'>
-              {(() => isAllEdited || formik.touched.email)
-                ? formik.errors.email
-                : ""}
+              {isAllEdited || formik.touched.email ? formik.errors.email : ""}
             </div>
           </div>
           <div className='mx-10'>
@@ -120,24 +120,34 @@ function SignIn() {
               />
             </div>
             <div className='text-red-600 ml-4'>
-              {(() => isAllEdited || formik.touched.password)
+              {isAllEdited || formik.touched.password
                 ? formik.errors.password
                 : ""}
             </div>
           </div>
 
           <div
-            className='rounded-2xl bg-yellow-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer'
+            className='rounded-2xl bg-yellow-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer w-2/5 text-center'
             onClick={handleFormSubmission}
           >
-            Sign Up
+            {isLoading ? (
+              <img
+                src={loading_gif}
+                height='34px'
+                width='34px'
+                alt='loading'
+                className='mx-auto'
+              />
+            ) : (
+              "Sign In"
+            )}
           </div>
           <hr className='border-t-2 border-gray-500 my-3 h-1 w-9/12' />
           <div
-            className='rounded-2xl bg-blue-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer'
+            className='rounded-2xl bg-blue-400 px-20 py-2 text-2xl font-bold text-white hover:text-black hover:border-black hover:border-2 cursor-pointer text-center w-2/5'
             onClick={() => navigate("/bookshelf/signUp")}
           >
-            Sign in
+            Sign Up
           </div>
         </div>
       </div>

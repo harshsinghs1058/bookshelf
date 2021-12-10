@@ -16,8 +16,13 @@ function NavBar() {
   };
 
   return (
-    <div className='bg-black text-white items-center flex justify-between h-16 w-screen px-20'>
-      <div className='font-bold text-2xl md:text-4xl'>BookShelf</div>
+    <div className='bg-black text-white items-center flex justify-between h-16 w-screen px-20 fixed top-0'>
+      <div
+        className='font-bold text-2xl md:text-4xl cursor-pointer'
+        onClick={() => navigate("/bookshelf")}
+      >
+        BookShelf
+      </div>
       {width > 768 - 768 ? (
         <div>
           <TabNavOptions />

@@ -8,6 +8,8 @@ import "firebase/compat/auth";
 import { useAuth } from "./context/authContext";
 import Books from "./pages/Books";
 import HomePage from "./pages/HomePage";
+import Book from "./pages/Book";
+
 firebase.initializeApp({
   //config
   //TODO::Use env
@@ -34,6 +36,7 @@ function App() {
             path='/bookshelf/CreateNewBook'
             element={<CreateNewBook />}
           />
+          <Route exact path='/bookshelf/book/:bookId' element={<Book />} />
         </Routes>
       </BrowserRouter>
     </div>
