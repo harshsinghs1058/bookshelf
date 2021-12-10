@@ -4,8 +4,8 @@ export default function HomePage() {
   if (authJson) {
     const authObj = JSON.parse(authJson);
     if (authObj.isSignedIn) {
-      return <Navigate to='Books' />;
+      return <Navigate to='/BookShelf/Books' />;
     }
   }
-  return <Navigate to='/sign-in' />;
+  return <Navigate to='/BookShelf/signIn' />;
 }

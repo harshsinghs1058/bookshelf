@@ -127,6 +127,7 @@ function Book() {
                           </div>
                           <div>
                             <img
+                              className='cursor-pointer'
                               src={
                                 data.bookmarks[i] === 0
                                   ? bookmark
