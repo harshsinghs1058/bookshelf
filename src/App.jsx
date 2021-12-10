@@ -9,6 +9,7 @@ import { useAuth } from "./context/authContext";
 import Books from "./pages/Books";
 import HomePage from "./pages/HomePage";
 import Book from "./pages/Book";
+import PageNotFound from "./pages/PageNotFound";
 
 firebase.initializeApp({
   //config
@@ -37,6 +38,7 @@ function App() {
             element={<CreateNewBook />}
           />
           <Route exact path='/bookshelf/book/:bookId' element={<Book />} />
+          <Route path='*' element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
