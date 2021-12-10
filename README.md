@@ -41,6 +41,9 @@ npm i
 npm run dev
 ```
 
+- In any browser open
+  - http://localhost:3000/bookshelf/
+
 ## ScreenShots
 
 #### Sign in page
