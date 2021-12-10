@@ -51,7 +51,7 @@ function CreateNewBook() {
       setIsLoading(true);
       let bookList = strToTitleAndContent(formik.values.book);
       var bookmarks = [];
-      for (var i = 0; i < bookList.size(); i++) {
+      for (var i = 0; i < bookList.length; i++) {
         bookmarks.push(0);
       }
       await firebase

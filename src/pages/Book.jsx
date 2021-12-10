@@ -90,15 +90,16 @@ function Book() {
                 BookMarks
               </div>
               {data.book.map((element, i) => {
-                return (
-                  <div
-                    className='mt-4 ml-4 text-xl'
-                    key={bookId + i + "hs"}
-                    id={bookId + i + "hs"}
-                  >
-                    {element.chapterHeading}
-                  </div>
-                );
+                if (!onlyBookMarks || data.bookmarks[i] === 1)
+                  return (
+                    <div
+                      className='mt-4 ml-4 text-xl'
+                      key={bookId + i + "hs"}
+                      id={bookId + i + "hs"}
+                    >
+                      {element.chapterHeading}
+                    </div>
+                  );
               })}
             </div>
             <div className='w-1/2 mx-auto'>
